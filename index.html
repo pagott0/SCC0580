@@ -1,0 +1,384 @@
+<!DOCTYPE html>
+<html lang="pt-PT">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>VivaMais | Acessibilidade para pessoas idosas</title>
+<style>
+  :root {
+    --page: #f8fafc;
+    --ink: #0f172a;
+    --ink-2: #334155;
+    --ink-3: #64748b;
+    --ink-4: #94a3b8;
+    --line: #e2e8f0;
+    --blue: #1d4ed8;
+    --blue-dark: #2339b3;
+    --blue-soft: #eff6ff;
+    --bad: #be123c;
+    --bad-icon: #e11d48;
+    --bad-bg: #fdf0f1;
+    --bad-bg-2: #fff7f8;
+    --bad-line: #f7c6cd;
+    --good: #166534;
+    --good-icon: #2f855a;
+    --good-bg: #effcf4;
+    --good-bg-2: #f6fef9;
+    --good-line: #b7efd0;
+  }
+  * { box-sizing: border-box; }
+  html { color-scheme: light; }
+  body {
+    margin: 0;
+    background: var(--page);
+    color: var(--ink);
+    font-family: Inter, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+    line-height: 1.5;
+  }
+  main { max-width: 1240px; margin: 0 auto; padding: 40px 24px 72px; }
+
+  /* Cabeçalho de cada tela */
+  .tela { margin-bottom: 72px; }
+  .tela-head { display: flex; gap: 20px; align-items: flex-start; margin-bottom: 24px; }
+  .num {
+    flex: none; width: 52px; height: 52px; border-radius: 14px;
+    background: #0f172a; color: #fff; font-weight: 800; font-size: 1.1rem;
+    display: grid; place-items: center;
+  }
+  .tela-head h2 { margin: 0; font-size: 1.9rem; letter-spacing: -0.02em; line-height: 1.2; }
+  .pill {
+    display: inline-block; vertical-align: middle; margin-left: 10px;
+    font-size: 0.85rem; font-weight: 700; color: #1d4ed8;
+    background: #eef4ff; border: 1px solid #c7d8fb; border-radius: 999px; padding: 2px 14px;
+    letter-spacing: 0;
+  }
+  .tela-head p { margin: 6px 0 0; color: var(--ink-2); font-size: 1.1rem; max-width: 60ch; }
+
+  /* Comparação */
+  .comparacao { display: grid; grid-template-columns: 1fr; max-width: 720px; }
+  .painel { border: 1px solid; border-radius: 22px; overflow: hidden; display: flex; flex-direction: column; background: var(--page); }
+  .painel.bad { border-color: var(--bad-line); }
+  .painel.good { border-color: var(--good-line); }
+  .painel-topo { display: flex; align-items: center; gap: 12px; padding: 14px 24px; font-weight: 800; letter-spacing: 0.04em; font-size: 1.15rem; }
+  .bad .painel-topo { background: var(--bad-bg); color: var(--bad); border-bottom: 1px solid var(--bad-line); }
+  .good .painel-topo { background: var(--good-bg); color: var(--good); border-bottom: 1px solid var(--good-line); }
+  .badge { width: 36px; height: 36px; border-radius: 50%; display: grid; place-items: center; color: #fff; flex: none; }
+  .bad .badge { background: var(--bad-icon); }
+  .good .badge { background: var(--good-icon); }
+  .badge svg { width: 18px; height: 18px; }
+  .palco { padding: 24px 24px 26px; background: #f1f5f9; flex: 1; }
+  .legenda { padding: 18px 24px; font-size: 1.1rem; }
+  .bad .legenda { background: var(--bad-bg-2); color: var(--bad); }
+  .good .legenda { background: var(--good-bg-2); color: var(--good); }
+
+  /* Janela do navegador */
+  .janela { background: #fff; border: 1px solid var(--line); border-radius: 16px; overflow: hidden; box-shadow: 0 2px 8px rgba(15,23,42,.08); }
+  .barra { background: #f1f5f9; padding: 10px 12px; display: flex; align-items: center; gap: 8px; }
+  .barra i { width: 10px; height: 10px; border-radius: 50%; background: #cbd5e1; display: block; }
+  .barra .url { margin-left: 8px; flex: 1; background: #fff; border-radius: 6px; padding: 4px 12px; font-size: 0.7rem; color: var(--ink-3); }
+  .site-nav { display: flex; align-items: center; justify-content: space-between; padding: 14px 18px; border-top: 1px solid var(--line); border-bottom: 1px solid var(--line); background: #fff; }
+  .marca { display: flex; align-items: center; gap: 10px; font-weight: 700; font-size: 1.05rem; color: var(--ink); }
+  .logo { width: 34px; height: 34px; border-radius: 9px; display: grid; place-items: center; color: #fff; font-weight: 800; font-size: 0.75rem; }
+  .bad .logo { background: #94a3b8; }
+  .good .logo { background: #1d4ed8; }
+  .site-nav ul { display: flex; gap: 14px; list-style: none; margin: 0; padding: 0; font-size: 0.78rem; color: var(--ink-3); }
+  .site-rodape { display: flex; justify-content: space-between; padding: 14px 18px; border-top: 1px solid var(--line); background: #f8fafc; font-size: 0.7rem; color: var(--ink-4); }
+
+  /* ---------- Tela 1: legibilidade ---------- */
+  .t1-bad .migalhas { background: #f8fafc; color: var(--ink-4); }
+  .t1-good .migalhas { background: var(--blue-soft); color: var(--blue); font-weight: 500; }
+  .migalhas { padding: 16px 18px; font-size: 0.78rem; border-bottom: 1px solid var(--line); }
+  .t1-corpo { padding: 24px 18px 26px; }
+  .t1-bad .t1-corpo { display: grid; grid-template-columns: 1fr 120px; gap: 18px; }
+  .t1-bad .lateral { border-left: 1px solid var(--line); padding-left: 16px; font-size: 0.7rem; color: var(--ink-4); }
+  .t1-bad .lateral strong { display: block; color: #64748b; margin-bottom: 10px; font-weight: 600; }
+  .t1-bad .lateral span { display: block; margin-bottom: 8px; }
+  .kicker-bad { font-size: 0.68rem; letter-spacing: 0.08em; color: var(--ink-4); font-weight: 600; margin: 0 0 14px; }
+  .kicker-good { font-size: 0.85rem; letter-spacing: 0.06em; color: var(--blue); font-weight: 800; margin: 0 0 14px; }
+  .t1-bad h3 { margin: 0 0 16px; font-size: 1.2rem; font-weight: 700; color: #1e293b; }
+  .t1-good h3 { margin: 0 0 16px; font-size: 1.5rem; font-weight: 800; color: var(--ink); }
+  .img-bad { height: 76px; border-radius: 10px; background: linear-gradient(#e5e7eb, #eceef2); margin-bottom: 16px; }
+  .img-good { height: 62px; border-radius: 10px; background: linear-gradient(110deg, #dbeafe, #e8f8f0); margin-bottom: 18px; }
+  .t1-bad p.txt { margin: 0 0 14px; font-size: 0.82rem; font-weight: 300; color: var(--ink-4); line-height: 1.65; }
+  .t1-good p.destaque { margin: 0 0 14px; font-size: 1.45rem; font-weight: 700; color: #334155; line-height: 1.4; }
+  .t1-good p.txt { margin: 0; font-size: 1.1rem; font-weight: 500; color: #1e293b; line-height: 1.6; }
+
+  /* ---------- Tela 2: controlos ---------- */
+  .hero { padding: 20px 18px; color: #fff; }
+  .t2-bad .hero { background: #374357; }
+  .t2-good .hero { background: var(--blue-dark); }
+  .hero small { display: block; font-size: 0.75rem; margin-bottom: 6px; }
+  .hero strong { font-size: 1.35rem; }
+  .t2-corpo { padding: 22px 18px 24px; }
+  .passos { display: grid; grid-template-columns: repeat(3, 1fr); gap: 6px; margin-bottom: 22px; }
+  .passos span { height: 5px; border-radius: 3px; background: #e2e8f0; }
+  .t2-bad .passos span:first-child { background: #64748b; }
+  .t2-good .passos span:first-child { background: var(--blue); height: 7px; }
+  .t2-good .passos span { height: 7px; }
+  .t2-corpo h3 { margin: 0 0 14px; font-size: 1rem; font-weight: 700; }
+  .t2-good .t2-corpo h3 { font-size: 1.2rem; }
+  .dados { border: 1px solid var(--line); border-radius: 10px; padding: 12px 16px; }
+  .dados div { display: flex; justify-content: space-between; padding: 5px 0; font-size: 0.78rem; }
+  .dados dt, .dados span:first-child { color: var(--ink-3); }
+  .dados b { color: var(--ink); font-weight: 700; }
+  .t2-good .dados { padding: 14px 18px; }
+  .t2-good .dados div { font-size: 0.95rem; padding: 7px 0; }
+  .mini { display: flex; justify-content: flex-end; margin-top: 22px; }
+  .mini button { width: 24px; height: 24px; padding: 0; border: 1px solid var(--line); background: #f1f5f9; color: #64748b; display: grid; place-items: center; cursor: pointer; }
+  .mini button:first-child { border-radius: 4px 0 0 4px; }
+  .mini button:last-child { border-radius: 0 4px 4px 0; border-left: 0; }
+  .mini svg { width: 11px; height: 11px; }
+  .acoes { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; margin-top: 22px; }
+  .btn {
+    min-height: 56px; border-radius: 10px; font: inherit; font-size: 1.15rem; font-weight: 700;
+    display: inline-flex; align-items: center; justify-content: center; gap: 10px; cursor: pointer;
+  }
+  .btn svg { width: 22px; height: 22px; }
+  .btn-sec { background: #fff; color: var(--ink); border: 3px solid #cbd5e1; }
+  .btn-pri { background: #2346d9; color: #fff; border: 3px solid #2346d9; }
+  .btn:focus-visible, .mini button:focus-visible { outline: 3px solid #0f172a; outline-offset: 2px; }
+
+  /* ---------- Tela 3: contraste ---------- */
+  .faixa { padding: 26px 18px 24px; }
+  .t3-bad .faixa { background: #f1f5f9; }
+  .t3-good .faixa { background: var(--blue-soft); }
+  .chip { display: inline-block; font-size: 0.7rem; padding: 4px 10px; border-radius: 5px; margin-bottom: 18px; }
+  .t3-bad .chip { background: #fff; color: var(--ink-3); }
+  .t3-good .chip { background: #dbe8fd; color: var(--blue); font-weight: 700; }
+  .faixa h3 { margin: 0; font-size: 1.45rem; font-weight: 800; }
+  .t3-bad .faixa h3 { color: #334155; }
+  .t3-good .faixa h3 { color: #000; }
+  .t3-corpo { padding: 20px 18px 16px; }
+  .cartao { border: 1px solid var(--line); border-radius: 12px 12px 0 0; padding: 18px; }
+  .cartao .ic { width: 38px; height: 38px; border-radius: 50%; display: grid; place-items: center; margin-bottom: 10px; }
+  .cartao .ic svg { width: 18px; height: 18px; }
+  .t3-bad .ic { background: #f1f5f9; color: #94a3b8; }
+  .t3-good .ic { background: #d8f7e5; color: #2f855a; }
+  .cartao strong { display: block; font-size: 1rem; }
+  .t3-bad .cartao strong { color: #475569; }
+  .cartao p { margin: 4px 0 0; font-size: 0.78rem; }
+  .t3-bad .cartao p { color: var(--ink-4); }
+  .t3-good .cartao p { color: #1e293b; }
+  .continuar { display: block; width: 100%; border: 0; border-radius: 0 0 12px 12px; padding: 18px; font: inherit; font-size: 1.2rem; font-weight: 800; cursor: pointer; }
+  .t3-bad .continuar { background: #e5e7eb; color: #fff; }
+  .t3-good .continuar { background: #000; color: #fff; }
+  .continuar:focus-visible { outline: 3px solid var(--blue); outline-offset: 2px; }
+
+  /* ---------- Tela 4: limite de tempo ---------- */
+  .t4-topo { padding: 18px 18px 16px; border-bottom: 1px solid var(--line); }
+  .t4-topo small { display: block; font-size: 0.75rem; margin-bottom: 4px; }
+  .t4-bad .t4-topo small { color: var(--ink-4); }
+  .t4-good .t4-topo small { color: var(--blue); font-weight: 500; }
+  .t4-topo h3 { margin: 0; font-size: 1.35rem; font-weight: 800; }
+  .t4-bad .t4-topo h3 { color: #334155; }
+  .t4-corpo { padding: 20px 18px 22px; }
+  .rotulo { height: 8px; border-radius: 4px; margin-bottom: 8px; }
+  .t4-bad .rotulo { background: #e5e7eb; }
+  .t4-good .rotulo { background: #cbd5e1; }
+  .campo { height: 36px; border-radius: 6px; margin-bottom: 18px; }
+  .t4-bad .campo { background: #f8fafc; border: 1px solid var(--line); }
+  .t4-good .campo { background: #fff; border: 1px solid #cbd5e1; }
+  .terminada { background: #f1f5f9; border-radius: 0 0 12px 12px; text-align: center; padding: 24px 16px 22px; margin-top: -18px; }
+  .terminada svg { width: 28px; height: 28px; color: #cbd5e1; }
+  .terminada strong { display: block; margin-top: 8px; color: #475569; }
+  .terminada span { font-size: 0.78rem; color: var(--ink-4); }
+  .aviso { margin-top: -18px; background: #fffbeb; border: 1.5px solid #fde68a; border-radius: 10px; padding: 16px; display: flex; gap: 12px; }
+  .aviso > svg { flex: none; width: 24px; height: 24px; color: #b45309; margin-top: 2px; }
+  .aviso strong { display: block; font-size: 1.05rem; color: #000; }
+  .aviso p { margin: 2px 0 14px; font-size: 0.78rem; color: #1e293b; }
+  .aviso .btn { min-height: 52px; padding: 0 22px; background: #2346d9; color: #fff; border: 0; font-size: 1rem; }
+
+  @media (max-width: 980px) {
+    .comparacao { grid-template-columns: 1fr; }
+  }
+  @media (max-width: 520px) {
+    main { padding: 24px 14px 48px; }
+    .tela-head { gap: 12px; }
+    .tela-head h2 { font-size: 1.4rem; }
+    .palco { padding: 12px; }
+    .site-nav ul { gap: 8px; }
+    .t1-bad .t1-corpo { grid-template-columns: 1fr; }
+    .t1-bad .lateral { border-left: 0; padding-left: 0; }
+    .acoes { grid-template-columns: 1fr; }
+  }
+</style>
+</head>
+<body>
+<svg width="0" height="0" style="position:absolute" aria-hidden="true">
+  <symbol id="i-x" viewBox="0 0 24 24"><path d="M6 6l12 12M18 6L6 18" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round"/></symbol>
+  <symbol id="i-check" viewBox="0 0 24 24"><path d="M5 12.5l4.5 4.5L19 7.5" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"/></symbol>
+  <symbol id="i-back" viewBox="0 0 24 24"><path d="M15 5l-7 7 7 7" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"/></symbol>
+  <symbol id="i-clock" viewBox="0 0 24 24"><circle cx="12" cy="12" r="9" fill="none" stroke="currentColor" stroke-width="2"/><path d="M12 7v5l3 2" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></symbol>
+</svg>
+
+<main>
+
+  <!-- 01 Legibilidade -->
+  <section class="tela" aria-labelledby="h1">
+    <div class="tela-head">
+      <div class="num">01</div>
+      <div>
+        <h2 id="h1">Legibilidade do texto <span class="pill">WCAG 1.4.3</span></h2>
+        <p>O tamanho, o peso e o contraste do texto determinam o esforço necessário para ler e compreender a informação.</p>
+      </div>
+    </div>
+    <div class="comparacao">
+      <article class="painel good">
+        <div class="painel-topo"><span class="badge"><svg><use href="#i-check"/></svg></span>ACESSÍVEL</div>
+        <div class="palco">
+          <div class="janela t1-good" data-url="vivamais.pt/bem-estar">
+            <div class="site-main">
+              <div class="migalhas">Início / Saúde / Bem-estar</div>
+              <div class="t1-corpo">
+                <p class="kicker-good">VIDA SAUDÁVEL</p>
+                <h3>Movimento em qualquer idade</h3>
+                <div class="img-good"></div>
+                <p class="destaque">A atividade física regular ajuda a preservar a mobilidade, a independência e o bem-estar.</p>
+                <p class="txt">Comece devagar e escolha atividades de que gosta. Uma pequena caminhada diária pode fazer a diferença.</p>
+              </div>
+            </div>
+          </div>
+        </div>
+        <p class="legenda">Texto ampliado, robusto e com contraste suficiente.</p>
+      </article>
+    </div>
+  </section>
+
+  <!-- 02 Controlos -->
+  <section class="tela" aria-labelledby="h2">
+    <div class="tela-head">
+      <div class="num">02</div>
+      <div>
+        <h2 id="h2">Tamanho dos controlos <span class="pill">WCAG 2.5.5</span></h2>
+        <p>Áreas de toque maiores e rótulos explícitos reduzem erros, sobretudo para pessoas com menor precisão motora.</p>
+      </div>
+    </div>
+    <div class="comparacao">
+      <article class="painel good">
+        <div class="painel-topo"><span class="badge"><svg><use href="#i-check"/></svg></span>ACESSÍVEL</div>
+        <div class="palco">
+          <div class="janela t2-good" data-url="vivamais.pt/marcacoes">
+            <div class="site-main">
+              <div class="hero"><small>Área pessoal</small><strong>Marcar consulta</strong></div>
+              <div class="t2-corpo">
+                <div class="passos"><span></span><span></span><span></span></div>
+                <h3>Confirme os dados</h3>
+                <div class="dados">
+                  <div><span>Especialidade</span><b>Medicina Geral</b></div>
+                  <div><span>Data</span><b>18 de junho, 10:30</b></div>
+                  <div><span>Local</span><b>Clínica Central</b></div>
+                </div>
+                <div class="acoes">
+                  <button type="button" class="btn btn-sec"><svg><use href="#i-back"/></svg>Voltar</button>
+                  <button type="button" class="btn btn-pri"><svg><use href="#i-check"/></svg>Confirmar</button>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <p class="legenda">Mínimo de 48 px, espaço generoso e texto claro.</p>
+      </article>
+    </div>
+  </section>
+
+  <!-- 03 Contraste -->
+  <section class="tela" aria-labelledby="h3">
+    <div class="tela-head">
+      <div class="num">03</div>
+      <div>
+        <h2 id="h3">Contraste dos elementos <span class="pill">WCAG 1.4.3</span></h2>
+        <p>Um contraste forte permite distinguir ações importantes mesmo com baixa visão ou em condições de luz adversas.</p>
+      </div>
+    </div>
+    <div class="comparacao">
+      <article class="painel good">
+        <div class="painel-topo"><span class="badge"><svg><use href="#i-check"/></svg></span>ACESSÍVEL</div>
+        <div class="palco">
+          <div class="janela t3-good" data-url="vivamais.pt/apoios">
+            <div class="site-main">
+              <div class="faixa"><span class="chip">Passo 3 de 3</span><h3>Pedido de apoio</h3></div>
+              <div class="t3-corpo">
+                <div class="cartao">
+                  <div class="ic"><svg><use href="#i-check"/></svg></div>
+                  <strong>O seu pedido está pronto.</strong>
+                  <p>Reveja os dados pessoais e os documentos antes de avançar.</p>
+                </div>
+                <button type="button" class="continuar">Continuar</button>
+              </div>
+            </div>
+          </div>
+        </div>
+        <p class="legenda">Preto sobre branco oferece contraste elevado e leitura imediata.</p>
+      </article>
+    </div>
+  </section>
+
+  <!-- 04 Limite de tempo -->
+  <section class="tela" aria-labelledby="h4">
+    <div class="tela-head">
+      <div class="num">04</div>
+      <div>
+        <h2 id="h4">Limite de tempo <span class="pill">WCAG 2.2.1</span></h2>
+        <p>Os utilizadores devem ser avisados antes do fim de uma sessão e ter uma forma simples de prolongar o tempo disponível.</p>
+      </div>
+    </div>
+    <div class="comparacao">
+      <article class="painel good">
+        <div class="painel-topo"><span class="badge"><svg><use href="#i-check"/></svg></span>ACESSÍVEL</div>
+        <div class="palco">
+          <div class="janela t4-good" data-url="vivamais.pt/candidatura">
+            <div class="site-main">
+              <div class="t4-topo"><small>Formulário de candidatura</small><h3>Dados do agregado</h3></div>
+              <div class="t4-corpo">
+                <div class="rotulo" style="width:90px"></div><div class="campo"></div>
+                <div class="rotulo" style="width:130px"></div><div class="campo"></div>
+                <div class="aviso" role="alert" id="aviso">
+                  <svg><use href="#i-clock"/></svg>
+                  <div>
+                    <strong id="aviso-titulo">A sua sessão vai expirar</strong>
+                    <p id="aviso-texto">Prolongue a sessão para não perder o trabalho.</p>
+                    <button type="button" class="btn" id="mais-tempo">Preciso de mais tempo</button>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <p class="legenda">Aviso antecipado, contexto claro e controlo para pedir mais tempo.</p>
+      </article>
+    </div>
+  </section>
+
+</main>
+
+<script>
+  // Monta a moldura do site (barra do navegador, menu e rodapé) em cada janela
+  document.querySelectorAll('.janela').forEach(function (j) {
+    var main = j.querySelector('.site-main');
+    var barra = document.createElement('div');
+    barra.className = 'barra';
+    barra.innerHTML = '<i></i><i></i><i></i><span class="url">' + j.dataset.url + '</span>';
+    var nav = document.createElement('div');
+    nav.className = 'site-nav';
+    nav.innerHTML = '<div class="marca"><span class="logo">V+</span>VivaMais</div>' +
+      '<ul><li>Início</li><li>Serviços</li><li>Ajuda</li></ul>';
+    var rodape = document.createElement('div');
+    rodape.className = 'site-rodape';
+    rodape.innerHTML = '<span>© VivaMais</span><span>Privacidade · Contactos</span>';
+    var lado = j.closest('.painel').classList.contains('bad') ? 'bad' : 'good';
+    nav.classList.add(lado);
+    nav.querySelector('.logo').className = 'logo';
+    j.prepend(barra);
+    barra.after(nav);
+    j.appendChild(rodape);
+    j.classList.add(lado);
+  });
+
+  document.getElementById('mais-tempo').addEventListener('click', function () {
+    document.getElementById('aviso-titulo').textContent = 'Sessão prolongada';
+    document.getElementById('aviso-texto').textContent = 'Pode continuar a preencher o formulário.';
+    this.hidden = true;
+  });
+</script>
+</body>
+</html>
